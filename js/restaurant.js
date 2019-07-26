@@ -11,7 +11,8 @@ var Restaurant = function(id, nombre, rubro, ubicacion, horarios, imagen, califi
 Restaurant.prototype.reservarHorario = function(horarioReservado) {
     for (var i = 0; i < this.horarios.length; i++) {
         if (this.horarios[i] === horarioReservado) {
-            this.horarios.splice(i, 1);
+            let horarioFiltrado = this.horarios.filter(hora => hora !== horarioReservado);
+            this.horarios = horarioFiltrado
             return;
         }
     }
@@ -23,17 +24,35 @@ Restaurant.prototype.calificar = function(nuevaCalificacion) {
     }
 }
 
+function sumatoria(numeros) {
+    let sum = 0;
+    numeros.forEach(function(numero) {
+        sum += numero;
+    });
+    return sum;
+}
+
+
+function promedio(numeros) {
+    let suma = sumatoria(numeros);
+    const promedio = suma / numeros.length;
+}
+
+
 Restaurant.prototype.obtenerPuntuacion = function() {
     if (this.calificaciones.length === 0) {
         return 0;
     } else {
-        var sumatoria = 0;
-        for (var i = 0; i < this.calificaciones.length; i++) {
-            sumatoria += this.calificaciones[i]
-        }
-        var promedio = sumatoria / this.calificaciones.length;
-        return Math.round(promedio * 10) / 10;
+        var prome = promedio(this.calificaciones)
+        return Math.round(prome * 10) / 10;
     }
 
 }
 
+
+var sumatoria = 0;
+for (var i = 0; i < this.calificaciones.length; i++) {
+    sumatoria += this.calificaciones[i]
+}
+var promedio = sumatoria / this.calificaciones.length;
+return Math.round(promedio * 10) / 10;
