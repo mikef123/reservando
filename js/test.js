@@ -3,6 +3,8 @@ let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13
 let horario = "13:00";
 let lista = [restaurant];
 var listado = new Listado(lista)
+var reserva1 = new Reservation(new Date(2018, 7, 24, 11, 00), 8, 350, "DES1")
+var reserva2 = new Reservation(new Date(2018, 7, 27, 14, 100), 2, 150, "DES200")
 
 describe('Reservar un horario', function() {
     it('Eliminación del horario luego de ser reservado', function() {
@@ -78,5 +80,16 @@ describe('Obtener restaurante', function() {
 
         let resultado = listado.obtenerRestaurantes(null, null, "33:00");
         expect(resultado).to.be.a('array').that.is.empty;
+    })
+})
+
+describe('Calcular el precio de una reserva', function() {
+    it('calcular el precio de la reserva base', function() {
+        let resultado = reserva1.calcularPrecioBaseReserva();
+        expect(resultado).to.equal(2800);
+    })
+    it('calcular el precio final', function() {
+        let resultado = reserva1.precioFinalReserva();
+        expect(resultado).to.equal(2387);
     })
 })

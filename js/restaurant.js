@@ -34,8 +34,7 @@ function sumatoria(numeros) {
 
 
 function promedio(numeros) {
-    let suma = sumatoria(numeros);
-    const promedio = suma / numeros.length;
+    return sumatoria(numeros) / numeros.length;
 }
 
 
@@ -43,16 +42,6 @@ Restaurant.prototype.obtenerPuntuacion = function() {
     if (this.calificaciones.length === 0) {
         return 0;
     } else {
-        var prome = promedio(this.calificaciones)
-        return Math.round(prome * 10) / 10;
+        return Math.round(promedio(this.calificaciones) * 10) / 10;
     }
-
 }
-
-
-var sumatoria = 0;
-for (var i = 0; i < this.calificaciones.length; i++) {
-    sumatoria += this.calificaciones[i]
-}
-var promedio = sumatoria / this.calificaciones.length;
-return Math.round(promedio * 10) / 10;
