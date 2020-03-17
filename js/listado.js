@@ -20,7 +20,7 @@ Listado.prototype.calificarRestaurant = function(id, calificacion) {
 //Dado un id, busca el objeto del listado que tiene ese id
 Listado.prototype.buscarRestaurante = function(id) {
     let restaurante = this.restaurantes.find(restaurant => restaurant.id === id);
-    return restaurante === undefined ? "No se ha encontrado ningún restaurant" : restaurante;
+    return restaurante ? restaurante : "No se ha encontrado ningún restaurant" ;
 }
 
 //Obtiene todas las ciudades de los restaurantes sin repetidos

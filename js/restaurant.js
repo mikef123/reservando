@@ -1,4 +1,4 @@
-var Restaurant = function(id, nombre, rubro, ubicacion, horarios, imagen, calificaciones) {
+var Restaurant = function (id, nombre, rubro, ubicacion, horarios, imagen, calificaciones) {
     this.id = id;
     this.nombre = nombre;
     this.rubro = rubro;
@@ -8,17 +8,11 @@ var Restaurant = function(id, nombre, rubro, ubicacion, horarios, imagen, califi
     this.calificaciones = calificaciones;
 }
 
-Restaurant.prototype.reservarHorario = function(horarioReservado) {
-    for (var i = 0; i < this.horarios.length; i++) {
-        if (this.horarios[i] === horarioReservado) {
-            let horarioFiltrado = this.horarios.filter(hora => hora !== horarioReservado);
-            this.horarios = horarioFiltrado
-            return;
-        }
-    }
+Restaurant.prototype.reservarHorario = function (horarioReservado) {
+    this.horarios = this.horarios.filter(hora => hora !== horarioReservado);
 }
 
-Restaurant.prototype.calificar = function(nuevaCalificacion) {
+Restaurant.prototype.calificar = function (nuevaCalificacion) {
     if (Number.isInteger(nuevaCalificacion) && nuevaCalificacion > 0 && nuevaCalificacion < 10) {
         this.calificaciones.push(nuevaCalificacion);
     }
@@ -26,7 +20,7 @@ Restaurant.prototype.calificar = function(nuevaCalificacion) {
 
 function sumatoria(numeros) {
     let sum = 0;
-    numeros.forEach(function(numero) {
+    numeros.forEach(function (numero) {
         sum += numero;
     });
     return sum;
@@ -38,7 +32,7 @@ function promedio(numeros) {
 }
 
 
-Restaurant.prototype.obtenerPuntuacion = function() {
+Restaurant.prototype.obtenerPuntuacion = function () {
     if (this.calificaciones.length === 0) {
         return 0;
     } else {

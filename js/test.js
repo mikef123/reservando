@@ -1,95 +1,104 @@
 let expect = chai.expect;
-let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
-let horario = "13:00";
-let lista = [restaurant];
-var listado = new Listado(lista)
-var reserva1 = new Reservation(new Date(2018, 7, 24, 11, 00), 8, 350, "DES1")
-var reserva2 = new Reservation(new Date(2018, 7, 27, 14, 100), 2, 150, "DES200")
 
-describe('Reservar un horario', function() {
-    it('Eliminación del horario luego de ser reservado', function() {
+describe('Reservar un horario', function () {
+    it('Dado un restaurante con el horario 13:00, al reservar ese horario, se elimina ese horario de su lista de horarios a reservar', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
         let horario = "13:00";
         restaurant.reservarHorario(horario);
         expect(restaurant.horarios).to.not.include("13:00");
     })
-    it('El arreglo es el mismo cuando se intenta eliminar un horario que no existe', function() {
+    it('Dado un restaurante, sus horarios se mantienen intactos cuando se intenta eliminar un horario que no existe de su lista de horarios', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
         var horarios = restaurant.horarios;
         restaurant.reservarHorario("33:00");
         expect(restaurant.horarios).to.have.ordered.members(horarios);
     })
-    it('El arreglo es el mismo cuando se intenta reservar sin un horario', function() {
+    it('Dado un restaurante su lista de horarios no será modificada si se intenta hacer una reservación sin hora', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
         let horarios = restaurant.horarios
         restaurant.reservarHorario();
         expect(restaurant.horarios).to.have.ordered.members(horarios);
     })
-    it('disminución en un elemento del arreglo de horario luego de ser reservado', function() {
+    it('Dado un restaurante su lista de horarios será disminuido en uno luego de ser escogido reservado', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
+        let horario = "13:00";
         restaurant.reservarHorario(horario);
         expect(1).to.equal(restaurant.horarios.length - 1);
     })
 })
 
 
-describe('Obtener puntuación', function() {
-    var horariosRestaurante = restaurant.horarios
-    it('Obtener el promedio de las calificaciones', function() {
-        expect(restaurant.obtenerPuntuacion()).to.above(0);
+describe('Obtener puntuación', function () {
+    it('Dado un restaurante con calificaciones de [6, 7, 9, 10, 5] el promedio de sus calificaciones es 7.4', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]);
+        var horariosRestaurante = restaurant.horarios
+        expect(restaurant.obtenerPuntuacion()).to.equal(7.4);
     })
-    it('El restaurante no posee recomendaciones', function() {
-        var restauranteSinCalificacion = restaurant
+    it('Dado un restaurante que no posea recomendaciones el promedio de su puntuación es igual a 0', function () {
+        var restauranteSinCalificacion = new Restaurant()
         restauranteSinCalificacion.calificaciones = []
-        expect(restaurant.obtenerPuntuacion()).to.equal(0);
+        expect(restauranteSinCalificacion.obtenerPuntuacion()).to.equal(0);
     })
 })
 
-describe('Calificacion', function() {
-    it('El valor calificado es una letra', function() {
-        let calificaciones = restaurant.calificaciones;
-        restaurant.calificar('Hola');
-        expect(restaurant.calificaciones).to.eql(calificaciones);
+describe('Calificacion', function () {
+    it('Dado un restaurante y se desea adicionar una calificación no numerica "Hola", no debe agregarse al arreglo de calificaciones', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]);
+        restaurant.calificar("hola");
+        expect(restaurant.calificaciones).to.eql([7]);
     })
-    it('El valor calificado es menor a 0', function() {
-        let calificaciones = restaurant.calificaciones;
-        restaurant.calificar(0);
-        expect(restaurant.calificaciones).to.eql(calificaciones);
-    })
-    it('Se califica un restarurante con un valor numerico entre 1 y 9', function() {
-        let calificaciones = restaurant.calificaciones.length
-        restaurant.calificar(2);
-        expect(restaurant.calificaciones).to.have.lengthOf(calificaciones + 1);
+    it('Dado un restaurante donde el valor calificado es 5 el arreglo de calificaciones queda []', function () {
+        let restaurant = new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]);
+        restaurant.calificar(5);
+        expect(restaurant.calificaciones).to.eql([7, 5]);
     })
 })
 
-describe('Buscar restaurante por id', function() {
-    it('El id a buscar no existe', function() {
-        resultado = listado.buscarRestaurante(200);
-        expect(resultado).to.be.an('string');
+describe('Buscar restaurante por id', function () {
+    var restaurantes = [
+        new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]),
+        new Restaurant(2, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]),
+        new Restaurant(3, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7])
+    ];
+    it('Dado una lista de restaurantes, al buscar el restaurante con el id 1, se obtiene el restaurante correcto', function () {
+        var listado = new Listado(restaurantes);
+        resultado = listado.buscarRestaurante(1);
+        expect(resultado.id).to.equal(1);
     })
-    it('El id a buscar existe', function() {
-        let resultado = listado.buscarRestaurante(1);
-        expect(restaurant).to.be.an('object');
+    it('Dado una lista de restaurantes, al buscar un restaurante con id 5 que no existe en la lista arroja el mensaje "No se ha encontrado ningún restaurant"', function () {
+        var listado = new Listado(restaurantes);
+        let resultado = listado.buscarRestaurante(5);
+        expect(resultado).to.equal("No se ha encontrado ningún restaurant");
     })
 })
 
-describe('Obtener restaurante', function() {
-    it('los parametros de búsqueda son null', function() {
-        let restaurantes = listado.restaurantes
+describe('Obtener restaurante', function () {
+    var restaurantes = [
+        new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]),
+        new Restaurant(2, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7]),
+        new Restaurant(3, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [7])
+    ];
+    it('Dado un listado con 3 restaurantes, si no se aplica ningún filtro, se obtiene como resultado 3 restaurante', function () {
+        var listado = new Listado(restaurantes)
         let resultado = listado.obtenerRestaurantes(null, null, null);
-        expect(resultado).to.have.ordered.members(restaurantes);
+        expect(resultado.length).to.equal(3);
     })
-    it('El id a buscar existe', function() {
+    it('Dado un listado con 3 restaurantes, si se busca un horario que no existe no retorna nada', function () {
 
         let resultado = listado.obtenerRestaurantes(null, null, "33:00");
         expect(resultado).to.be.a('array').that.is.empty;
     })
 })
 
-describe('Calcular el precio de una reserva', function() {
-    it('calcular el precio de la reserva base', function() {
-        let resultado = reserva1.calcularPrecioBaseReserva();
+describe('Calcular el precio de una reserva', function () {
+    it('calcular el precio de la reserva base', function () {
+        var reserva1 = new Reserva(new Date(2018, 7, 24, 11, 00), 8, 350, "DES1")
+        let resultado = reserva1.obtenerPrecioBase();
         expect(resultado).to.equal(2800);
     })
-    it('calcular el precio final', function() {
-        let resultado = reserva1.precioFinalReserva();
-        expect(resultado).to.equal(2387);
+    it('calcular el precio final', function () {
+        var reserva2 = new Reserva(new Date(2018, 7, 27, 14, 100), 2, 150, "DES200")
+        let resultado = reserva2.calcularPrecio();
+        expect(resultado).to.equal(100);
     })
 })
